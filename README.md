@@ -38,6 +38,8 @@ npm install
 npm run dev
 ```
 
+<br>
+
 ## 💻 Backend
 
 **1.** Install PostgresQL software
