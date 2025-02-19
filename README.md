@@ -16,16 +16,10 @@ The "WebSocketChat" project is an educational example designed to demonstrate th
 <br>
 
 ### 📜 License
-<p align="center">
-  [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE) By [Patryk Piotrowski](https://github.com/Xdellta)
-</p>
+[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE) By [Patryk Piotrowski](https://github.com/Xdellta)
 
 <br>
 
-<h2 align="center">
-  ![Vue.js](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D) Frontend
-</h2>
+## 🎨 Frontend
 
-<h2 align="center">
-  ![Express](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white) Backend
-</h2>
+## ⚙️ Backend
