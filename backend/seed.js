@@ -1,6 +1,5 @@
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
 const prisma = require('./prisma/prismaClient.js');
 const userModel = require('./src/models/userModel.js');
 
@@ -17,13 +16,9 @@ async function seedDatabase() {
       const response = await axios.get('https://randomuser.me/api/');
       const userData = response.data.results[0];
 
-      const hashedPassword = await bcrypt.hash('password123', 10);
-
       const user = {
         user_id: uuidv4(),
         name: `${userData.name.first} ${userData.name.last}`,
-        email: userData.email,
-        password: hashedPassword,
         avatar: userData.picture.large,
       };
 
@@ -40,5 +35,12 @@ async function seedDatabase() {
   } finally {
     console.log('Seeding completed successfully');
     await prisma.$disconnect();
+  }
+
+
+  try {
+
+  } catch(error) {
+    
   }
 }

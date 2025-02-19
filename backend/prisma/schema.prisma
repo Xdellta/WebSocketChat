@@ -10,7 +10,33 @@ generator client {
 model User {
   user_id String @id @default(uuid())
   name    String
-  email   String @unique
-  password String
-  avatar  String
+  avatar  String?
+  chats   ChatUser[]
+  messages ChatMessage[]
+}
+
+model Chat {
+  chat_id    String      @id @default(uuid())
+  name       String
+  avatar     String?
+  chat_users ChatUser[]
+  messages   ChatMessage[]
+}
+
+model ChatUser {
+  chat_user_id String   @id @default(uuid())
+  user_id      String
+  chat_id      String
+  user         User     @relation(fields: [user_id], references: [user_id])
+  chat         Chat     @relation(fields: [chat_id], references: [chat_id])
+}
+
+model ChatMessage {
+  message_id String   @id @default(uuid())
+  user_id    String
+  chat_id    String
+  content    String
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [user_id])
+  chat       Chat     @relation(fields: [chat_id], references: [chat_id])
 }
