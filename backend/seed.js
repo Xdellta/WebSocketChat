@@ -1,14 +1,15 @@
-const { PrismaClient } = require('@prisma/client');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
+const prisma = require('./prisma/prismaClient.js');
 
-const prisma = new PrismaClient();
 
 seedDatabase();
 
 async function seedDatabase() {
   try {
+    await prisma.user.deleteMany();
+
     const users = [];
 
     for (let i = 0; i < 2; i++) {

@@ -22,4 +22,59 @@ The "WebSocketChat" project is an educational example designed to demonstrate th
 
 ## 🎨 Frontend
 
-## ⚙️ Backend
+**1.** Clone the repository:
+```sh
+git https://github.com/Xdellta/WebSocketChat.git
+cd WebSocketChat && cd frontend
+```
+
+**2.** Install dependencies:
+```sh
+npm install
+```
+
+**3.** Start the server
+```sh
+npm run dev
+```
+
+## 💻 Backend
+
+**1.** Install PostgresQL software
+```sh
+https://www.postgresql.org/download/
+```
+
+**2.** Clone the repository:
+```sh
+git https://github.com/Xdellta/WebSocketChat.git
+cd WebSocketChat && cd backend
+```
+
+**3.** Install dependencies:
+```sh
+npm install
+```
+
+**4** Configure the environment
+Create a .env file in the project root and configure the required environment variables. Below is an example:
+```env
+NODE_ENV=development
+PORT=
+DB_USER=
+DB_HOST=
+DB_DATABASE=
+DB_PASSWORD=
+DB_PORT=
+```
+
+**5.** Run database migrations and seed data
+```sh
+npx prisma migrate dev  
+npm run seed  
+```
+
+**6.** Start the server
+```sh
+npm run dev
+```
