@@ -63,11 +63,7 @@ Create a .env file in the project root and configure the required environment va
 ```env
 NODE_ENV=development
 PORT=
-DB_USER=
-DB_HOST=
-DB_DATABASE=
-DB_PASSWORD=
-DB_PORT=
+DATABASE_URL=postgresql://username:password@localhost:5432/WebSocketChat
 ```
 
 **5.** Run database migrations and seed data

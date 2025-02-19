@@ -2,6 +2,7 @@ const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const prisma = require('./prisma/prismaClient.js');
+const userModel = require('./src/models/userModel.js');
 
 
 seedDatabase();
@@ -30,18 +31,12 @@ async function seedDatabase() {
     }
 
     for (const user of users) {
-      await prisma.user.create({
-        data: {
-          name: user.name,
-          email: user.email,
-          password: user.password,
-          avatar: user.avatar,
-        },
-      });
+      userModel.createUser(user);
     }
 
   } catch (error) {
     console.error('Error while seeding users:', error);
+    
   } finally {
     console.log('Seeding completed successfully');
     await prisma.$disconnect();
