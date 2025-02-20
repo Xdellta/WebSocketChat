@@ -7,36 +7,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
+model Users {
   user_id String @id @default(uuid())
   name    String
   avatar  String?
-  chats   ChatUser[]
-  messages ChatMessage[]
+  messages ChatMessages[]
 }
 
-model Chat {
-  chat_id    String      @id @default(uuid())
-  name       String
-  avatar     String?
-  chat_users ChatUser[]
-  messages   ChatMessage[]
-}
-
-model ChatUser {
-  chat_user_id String   @id @default(uuid())
-  user_id      String
-  chat_id      String
-  user         User     @relation(fields: [user_id], references: [user_id])
-  chat         Chat     @relation(fields: [chat_id], references: [chat_id])
-}
-
-model ChatMessage {
+model ChatMessages {
   message_id String   @id @default(uuid())
   user_id    String
-  chat_id    String
   content    String
   created_at DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [user_id])
-  chat       Chat     @relation(fields: [chat_id], references: [chat_id])
+
+  user Users @relation(fields: [user_id], references: [user_id])
 }
