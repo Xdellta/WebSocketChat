@@ -1,9 +1,6 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import chatBoard from '@/components/main/chatBoard.vue';
   import inputMessage from '@/components/main/inputMsg.vue';
-
-  const inputMsg = ref();
 </script>
 
 <template>
@@ -11,7 +8,7 @@
 
   <main>
     <chatBoard />
-    <inputMessage v-model="inputMsg" />
+    <inputMessage />
   </main>
 </template>
 

@@ -1,7 +1,21 @@
 <script setup lang="ts">
-  import { ref, defineModel } from 'vue';
+  import { ref, onMounted } from 'vue';
+  import WebSocketService from '@/services/webSocketService.ts'
 
-  const inputMsg = defineModel('inputMsg')
+  const inputText = ref('');
+  const socketService = new WebSocketService();
+
+  function sendMessage() {
+    if(!inputText.value) return;
+
+    socketService.sendMessage(inputText.value);
+
+    inputText.value = '';
+  }
+
+  onMounted(() => {
+    socketService.connect();
+  })
 </script>
 
 <template>
@@ -9,7 +23,8 @@
     <input
       type="text"
       placeholder="Your message..."
-      v-model="inputMsg"
+      v-model="inputText"
+      @keydown.enter="sendMessage"
     >
   </div>
 </template>

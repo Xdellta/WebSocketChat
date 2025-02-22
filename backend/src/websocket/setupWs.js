@@ -6,11 +6,18 @@ function setupWebSocket(server) {
 
   wss.on("connection", (ws) => {
     addClient(ws);
-    console.log("Nowe połączenie WebSocket");
+
+    ws.on("message", (message) => {
+      message = message.toString();
+      console.log("Otrzymano wiadomość:", message);
+    });
+
+    ws.on("error", (error) => {
+      console.error("Error WebSocket:", error);
+    });
 
     ws.on("close", () => {
       removeClient(ws);
-      console.log("Połączenie WebSocket zamknięte");
     });
   });
 }
