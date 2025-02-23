@@ -1,15 +1,15 @@
 const WebSocket = require('ws');
-const { addClient, removeClient } = require('./connectWs.js');
+const { addClient, removeClient } = require('./connections.js');
+const { handleMessage } = require('./handleMessage.js')
 
-function setupWebSocket(server) {
+function websocketServer(server) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
     addClient(ws);
 
     ws.on("message", (message) => {
-      message = message.toString();
-      console.log("Otrzymano wiadomość:", message);
+      handleMessage(ws, message);
     });
 
     ws.on("error", (error) => {
@@ -22,4 +22,4 @@ function setupWebSocket(server) {
   });
 }
 
-module.exports = { setupWebSocket };
+module.exports = { websocketServer };

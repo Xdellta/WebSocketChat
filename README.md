@@ -61,8 +61,6 @@ npm install
 **4** Configure the environment
 Create a .env file in the project root and configure the required environment variables. Below is an example:
 ```env
-NODE_ENV=development
-PORT=
 DATABASE_URL=postgresql://username:password@localhost:5432/WebSocketChat
 ```
 

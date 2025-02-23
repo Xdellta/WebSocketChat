@@ -1,10 +1,8 @@
 class WebSocketService {
   socket: WebSocket | null;
-  listeners: Function[];
 
   constructor() {
     this.socket = null;
-    this.listeners = [];
   }
 
   connect(): void {
@@ -15,7 +13,7 @@ class WebSocketService {
     };
 
     this.socket.onmessage = (event) => {
-      this.listeners.forEach(listener => listener(event.data));
+      const message = JSON.parse(event.data);
     };
 
     this.socket.onerror = (error) => {
@@ -27,14 +25,10 @@ class WebSocketService {
     };
   }
 
-  addListener(listener: Function): void {
-    this.listeners.push(listener);
-  }
-
-  sendMessage(message: string): void {
+  sendMessage(message: object): void {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      console.log('Sending message:', message);
-      this.socket.send(message);
+      const jsonMessage = JSON.stringify(message);
+      this.socket.send(jsonMessage);
     } else {
       console.error('WebSocket connection is not open');
     }

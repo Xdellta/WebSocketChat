@@ -1,6 +1,12 @@
+<script setup lang="ts">
+  import { ref, onMounted } from 'vue';
+
+  const messages = ref([]);
+</script>
+
 <template>
   <ul class="chat-board">
-    <li></li>
+    <li>{{ messages }}</li>
   </ul>
 </template>
 

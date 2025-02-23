@@ -8,7 +8,11 @@
   function sendMessage() {
     if(!inputText.value) return;
 
-    socketService.sendMessage(inputText.value);
+    socketService.sendMessage({
+      userId: '9ab6fc0c-157b-4117-94f0-0515b416754b',
+      type: 'newMessage',
+      content: inputText.value,
+    });
 
     inputText.value = '';
   }
