@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 const { addClient, removeClient } = require('./connections.js');
 const { handleMessage } = require('./handleMessage.js')
 
-function websocketServer(server) {
+function websocketSetup(server) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
@@ -22,4 +22,4 @@ function websocketServer(server) {
   });
 }
 
-module.exports = { websocketServer };
+module.exports = { websocketSetup };

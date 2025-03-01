@@ -13,7 +13,7 @@ class WebSocketService {
     };
 
     this.socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
+      const data = JSON.parse(event.data);
     };
 
     this.socket.onerror = (error) => {
@@ -21,7 +21,7 @@ class WebSocketService {
     };
 
     this.socket.onclose = () => {
-      console.log('WebSocket connection close');
+      console.log('WebSocket connection closed');
     };
   }
 

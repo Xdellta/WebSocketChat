@@ -1,12 +1,21 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, inject } from 'vue';
 
-  const messages = ref([]);
+  interface Message {
+    userId: string;
+    type: string;
+    content: string
+  }
+
+  const wsService = inject('wsService');
+  const messages = ref<Message[]>([]);
 </script>
 
 <template>
   <ul class="chat-board">
-    <li>{{ messages }}</li>
+    <li v-for="message in messages" :key="message.userId">
+      {{ message.content }}
+    </li>
   </ul>
 </template>
 
