@@ -1,8 +1,10 @@
 class WebSocketService {
   socket: WebSocket | null;
+  listeners: { [key: string]: Array<(message: any) => void> };
 
   constructor() {
     this.socket = null;
+    this.listeners = {};
   }
 
   connect(): void {
@@ -14,6 +16,10 @@ class WebSocketService {
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      
+      if (this.listeners[data.type]) {
+        this.listeners[data.type].forEach((callback) => callback(data.message));
+      }
     };
 
     this.socket.onerror = (error) => {
@@ -23,6 +29,13 @@ class WebSocketService {
     this.socket.onclose = () => {
       console.log('WebSocket connection closed');
     };
+  }
+
+  addListener(dataType: string, callback: (message: any) => void): void {
+    if (!this.listeners[dataType]) {
+      this.listeners[dataType] = [];
+    }
+    this.listeners[dataType].push(callback);
   }
 
   sendMessage(message: object): void {

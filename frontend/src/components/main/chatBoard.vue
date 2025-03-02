@@ -9,6 +9,10 @@
 
   const wsService = inject('wsService');
   const messages = ref<Message[]>([]);
+
+  wsService.addListener('newMessage', (message: Message) => {
+    messages.value.push(message);
+  });
 </script>
 
 <template>
@@ -22,9 +26,10 @@
 <style scoped>
   ul {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     list-style: none;
+    flex: 1;
+    overflow-y: auto;
   }
 </style>

@@ -37,8 +37,7 @@
   main {
     width: 100%;
     height: calc(100% - 60px);
-    padding: 20px;
-    gap: 20px;
+    padding: 0 20px 20px 20px;
     display: flex;
     flex-direction: column;
   }
