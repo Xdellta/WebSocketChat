@@ -13,11 +13,19 @@ async function newMessage(ws, userId, content) {
     }
   })
 
+  const user = await prisma.users.findFirst({
+    where: {
+      user_id: userId,
+    }
+  })
+
   ws.send(JSON.stringify({
     type: 'newMessage',
     message: {
       messageId: message.message_id,
-      userId: message.user_id,
+      userId: user.user_id,
+      userName: user.name,
+      userAvatar: user.avatar,
       content: message.content,
       createdAt: message.created_at,
     }
