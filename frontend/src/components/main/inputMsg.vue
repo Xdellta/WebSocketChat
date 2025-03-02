@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import { ref, onMounted, inject } from 'vue';
-  import WebSocketService from '@/services/webSocketService';
+  import { useRoute } from 'vue-router';
 
+  const route = useRoute();
+  const userId = route.params.userId as string;
   const inputText = ref('');
   const wsService = inject('wsService')
 
@@ -9,7 +11,7 @@
     if(!inputText.value) return;
 
     wsService.sendMessage({
-      userId: '9ab6fc0c-157b-4117-94f0-0515b416754b',
+      userId,
       type: 'newMessage',
       content: inputText.value,
     });
