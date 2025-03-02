@@ -1,7 +1,37 @@
+<script lang="ts" setup>
+  import { useRouter } from 'vue-router';
+  import axiosInstance from '@/services/axiosService';
+
+  const router = useRouter();
+
+  async function getUser(userNumber: number) {
+    try {
+      if (!userNumber) {
+        console.error('User number must be 1 or 2.');
+        return;
+      }
+
+      const result = await axiosInstance.post('/auth/login', { userNumber });
+
+      if (!result) {
+        console.error(`Error while retrieving user from server.`);
+        return;
+      }
+
+      if (result.data.success == true) {
+        router.push(`/chat/${result.data.userId}`);
+      }
+
+    } catch(error) {
+      console.error(`Error while downloading user: ${error}`)
+    }
+  }
+</script>
+
 <template>
   <div class="login-wrapper">
-    <button id="btn-1">User #1</button>
-    <button id="btn-2">User #2</button>
+    <button id="btn-1" @click="getUser(1)">User #1</button>
+    <button id="btn-2" @click="getUser(2)">User #2</button>
   </div>
 </template>
 
