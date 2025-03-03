@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { ref, inject } from 'vue';
+  import { ref, inject, onMounted } from 'vue';
   import { useRoute } from 'vue-router';
+  import axiosInstance from '@/services/axiosService';
 
   interface Message {
     messageId: string;
@@ -16,12 +17,31 @@
   const wsService = inject('wsService');
   const messages = ref<Message[]>([]);
 
+  async function getMsgHistory(lastMessage: string | null) {
+    try {
+      const response = await axiosInstance.get('chat/getChatHistory', {
+        params: { lastMessage }
+      });
+      
+      messages.value.push(...response.data.data)
+
+    } catch (error) {
+      console.error('Error fetching chat history:', error);
+    }
+  }
+
   wsService.addListener('newMessage', (message: Message) => {
     messages.value.push(message);
   });
+
+  onMounted(() => {
+    getMsgHistory();
+  })
 </script>
 
 <template>
+  <div class="shadow top-shadow"></div>
+
   <ul class="chat-board">
     <li 
       v-for="message in messages"
@@ -43,9 +63,28 @@
       </p>
     </li>
   </ul>
+
+  <div class="shadow bottom-shadow"></div>
 </template>
 
 <style scoped>
+  .shadow {
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+
+  .top-shadow {
+    height: 60px;
+    background: linear-gradient(var(--color-background), rgba(0, 0, 0, 0));
+  }
+
+  .bottom-shadow {
+    height: 20px;
+    bottom: 75px;
+    background: linear-gradient(rgba(0, 0, 0, 0), var(--color-background));
+  }
+
   ul {
     width: 100%;
     display: flex;
@@ -54,14 +93,15 @@
     flex: 1;
     overflow-y: auto;
     gap: 30px;
+    padding: 20px;
   }
 
   li {
     display: grid;
     grid-template-columns: 36px auto;
     grid-template-rows: auto auto;
-    column-gap: 8px;
-    row-gap: 4px;
+    column-gap: 10px;
+    row-gap: 8px;
   }
 
   .your-message {

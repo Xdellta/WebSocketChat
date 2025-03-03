@@ -29,16 +29,16 @@
 <style scoped>
   header {
     width: 100%;
-    height: 60px;
+    height: 80px;
     display: flex;
-    border-bottom: 1px solid var(--color-border);
   }
 
   main {
     width: 100%;
     height: calc(100% - 60px);
-    padding: 0 20px 20px 20px;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    padding-bottom: 20px;
   }
 </style>

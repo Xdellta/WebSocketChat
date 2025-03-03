@@ -39,6 +39,7 @@
   .input-wrapper {
     width: 100%;
     height: 45px;
+    padding: 0 20px;
   }
 
   input {
