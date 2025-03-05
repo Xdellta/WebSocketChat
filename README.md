@@ -61,7 +61,13 @@ npm install
 **4** Configure the environment
 Create a .env file in the project root and configure the required environment variables. Below is an example:
 ```env
-DATABASE_URL=postgresql://username:password@localhost:5432/WebSocketChat
+BACK_DOMAIN=localhost
+BACK_PORT=3000
+
+FRONT_DOMAIN=localhost
+FRONT_PORT=5173
+
+DATABASE_URL=postgresql://postgres:password@localhost:5432/WebSocketChat
 ```
 
 **5.** Run database migrations and seed data
