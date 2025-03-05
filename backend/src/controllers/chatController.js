@@ -2,23 +2,34 @@ const prisma = require('../../prisma/prismaClient');
 
 async function getChatHistory(req, res) {
   try {
-    const lastMessage = req.body.lastMessage;
+    const oldestMessageId = req.query.oldestMessageId;
 
-    const queryOptions = {
+    let queryOptions = {
       take: 30,
-      orderBy: { created_at: 'desc' },
       include: {
-        user: {
-          select: {
-            name: true,
-            avatar: true,
-          },
-        },
+        user: true,
+      },
+      orderBy: {
+        created_at: 'desc',
       },
     };
 
-    if (lastMessage) {
-      queryOptions.where = { created_at: { lt: new Date(lastMessage) } };
+    if (oldestMessageId) {
+      const oldestMessage = await prisma.chatMessages.findUnique({
+        where: { message_id: oldestMessageId },
+        select: { created_at: true },
+      });
+
+      if (!oldestMessage) {
+        return res.status(404).json({
+          success: false,
+          message: 'Message not found.',
+        });
+      }
+
+      queryOptions.where = {
+        created_at: { lt: oldestMessage.created_at },
+      };
     }
 
     const messages = await prisma.chatMessages.findMany(queryOptions);
@@ -29,7 +40,7 @@ async function getChatHistory(req, res) {
       userName: msg.user?.name || 'Unknown',
       userAvatar: msg.user?.avatar || null,
       content: msg.content,
-      createdAt: msg.created_at.toISOString(),
+      createdAt: msg.created_at,
     }));
 
     res.status(200).json({

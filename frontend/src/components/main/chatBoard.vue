@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, inject, onMounted } from 'vue';
+  import { ref, inject, onMounted, nextTick } from 'vue';
   import { useRoute } from 'vue-router';
   import axiosInstance from '@/services/axiosService';
 
@@ -15,23 +15,65 @@
   const route = useRoute();
   const yourId = route.params.userId;
   const wsService = inject('wsService');
+  const chatBoard = ref<HTMLElement | null>(null);
   const messages = ref<Message[]>([]);
+  const isLoading = ref(false);
+  const noMoreOldMessages = ref(false)
 
-  async function getMsgHistory(lastMessage: string | null) {
+  async function getMsgHistory(oldestMessageId: string | null) {
+    isLoading.value = true;
+
+    const oldScrollHeight = chatBoard.value?.scrollHeight;
+    
     try {
       const response = await axiosInstance.get('chat/getChatHistory', {
-        params: { lastMessage }
+        params: { oldestMessageId }
       });
+
+      if (response.data.data.length === 0) {
+        noMoreOldMessages.value = true;
+      }
       
-      messages.value.push(...response.data.data)
+      messages.value.unshift(...response.data.data);
+
+      isLoading.value = false;
+
+      nextTick(() => {
+        if (chatBoard.value && messages.value.length <= 30) {
+          chatBoard.value.scrollTop = chatBoard.value.scrollHeight + 40;
+        }
+      })
+
+      nextTick(() => {
+        if (chatBoard.value && !isLoading.value && messages.value.length > 30) {
+          chatBoard.value.scrollTop = chatBoard.value.scrollHeight - oldScrollHeight! + 40;
+        }
+      });
 
     } catch (error) {
+      isLoading.value = false;
       console.error('Error fetching chat history:', error);
+    }
+  }
+
+  function handleScroll(event: Event) {
+    const chatBoard = event.target as HTMLElement;
+
+    if (chatBoard.scrollTop === 0 && !isLoading.value && messages.value.length > 0 && !noMoreOldMessages.value) {
+      const oldestMessageId = messages.value[0].messageId;
+
+      if (oldestMessageId) getMsgHistory(oldestMessageId);
     }
   }
 
   wsService.addListener('newMessage', (message: Message) => {
     messages.value.push(message);
+
+    nextTick(() => {
+      if (chatBoard.value) {
+        chatBoard.value.scrollTop = chatBoard.value.scrollHeight + 40;
+      }
+    });
   });
 
   onMounted(() => {
@@ -42,7 +84,7 @@
 <template>
   <div class="shadow top-shadow"></div>
 
-  <ul class="chat-board">
+  <ul class="chat-board" ref="chatBoard" @scroll="handleScroll">
     <li 
       v-for="message in messages"
       :key="message.userId"
